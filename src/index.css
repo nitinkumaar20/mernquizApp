@@ -82,11 +82,14 @@ html {
   font-size: 5rem;
   margin-bottom: 9rem;
   text-transform: uppercase;
-  color: cyan;
-  animation-name: colors;
+  color: rgb(0, 0, 0);
+  background-color: #00ff7f;
+  border-radius: 2rem;
+  padding: 2rem 3rem;
+  /* animation-name: colors;
   animation-duration: 5s;
   transition: 1s;
-  animation-iteration-count: infinite;
+  animation-iteration-count: infinite; */
 }
 @keyframes colors {
   25% {

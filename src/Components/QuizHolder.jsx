@@ -45,17 +45,62 @@ ans: "ans1"
 }]
 
 
-export default function QuizHolder(props) {
 
-const [start, setStart] = useState(true);
-const [score, setScore] = useState(0);
-const [current, setCurrent] = useState(0);
-const [changeColor, setChangeColor] = useState('')
+
+
+
+  
+
+export default function QuizHolder(props) {
+  const initialstate = [];
+  const [Questions, setQuestions] = useState(initialstate);
+
+  // get all Notes ---------------------------------->
+  const getNotes = async () => {
+    //to do api call
+
+    const response = await fetch(`http://localhost:5000/api/notes/fetchQues`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+    });
+    const jso = await response.json();
+    setQuestions(jso);
+  };
+  
+  getNotes();
+
+  const [start, setStart] = useState(true);
+  const [score, setScore] = useState(0);
+  const [IndexValue, setIndexValue] = useState(0);
+  const [changeColor, setChangeColor] = useState("");
+  const [Timer, setTimer] = useState(false);
+  const [TimerValue, setTimerValue] = useState(60);
+
   return (
-    <QuizContex.Provider value={{start,setStart,data,score,setScore,setCurrent,current,changeColor,setChangeColor}}>
-        {props.children}
+    <QuizContex.Provider
+      value={{
+        Questions,
+        TimerValue,
+        setTimerValue,
+        Timer,
+        setTimer,
+        start,
+        setStart,
+        data,
+        score,
+        setScore,
+        setIndexValue,
+        IndexValue,
+        changeColor,
+        setChangeColor,
+      }}
+    >
+      {props.children}
     </QuizContex.Provider>
-  )
+  );
 }
 
 export {QuizContex};
