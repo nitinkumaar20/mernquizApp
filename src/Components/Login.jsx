@@ -1,9 +1,21 @@
-import{ useState, React }from 'react'
-
+import{ useState, React, useEffect }from 'react'
+import jwt_decode from 'jwt-decode';
 import { useNavigate  } from "react-router-dom";
 
 
 export default function Login() {
+
+      const navigate = useNavigate();
+
+      useEffect(() => {
+        const jwt = localStorage.getItem('token');
+        if (jwt) {
+          const decode = jwt_decode(jwt);
+          if ((decode.exp*1000) > Date.now()) {
+            navigate('/body')
+          } 
+        }
+      }, [])
 
       const [credientials, setCredientials] = useState({
         email: "",
@@ -12,7 +24,6 @@ export default function Login() {
       const onchangeButton = (e) => {
         setCredientials({ ...credientials, [e.target.name]: e.target.value });
       };
-      let navigate = useNavigate();
 
       const submitButton = async (e) => {
         e.preventDefault();
@@ -26,22 +37,20 @@ export default function Login() {
             email: credientials.email,
             password: credientials.password,
           }),
-        });
-        
-   
-        const jso = await response.json();
-        console.log(jso);
-        if (jso.success) {
-          //   props.showalert("success to login", "success");
-          // save the auth token
-          localStorage.setItem("token", jso.authToken);
-          console.log("boyy pr jao");
-  
-           navigate("/body");
+        }); 
+         
+        const result = await response.json(); 
+        if (result.success) {  
+          localStorage.setItem("token", result.authToken);
+          if (result.permission == 1)
+            navigate('/admin') 
+          else
+            navigate("/body");
         }else{
-            alert("please enter valid credientials ");
+          alert("please enter valid credientials ");
         }
       };
+      
   return (
     <div className="container">
       <form onSubmit={submitButton}>
