@@ -1,5 +1,6 @@
 import { useContext, React, useState,useEffect } from "react";
 import { QuizContex } from "./QuizHolder";
+import { useNavigate } from 'react-router-dom';
 
 export default function QuesDiv() {
   const {
@@ -12,24 +13,32 @@ export default function QuesDiv() {
  
   } = useContext(QuizContex);
 
+  const navigate = useNavigate()
   const [select, setSelect] = useState("");
   const [optionSelect, setOptionSelect] = useState("color");
   const [hid, setHid] = useState("need-to-select-hid");
+  const num_of_quiz = data.length;
 
   const submitBtn = () => {
+    
     setHid("need-to-select-hid");
     setSelect("");
     if (select) {
       // yaha pr hamne sir select use kiya hai matlab agr object khali hai tho false agr value mil gyi tho true ho jayega
-      setIndexValue(IndexValue + 1);
+      if (select === data[IndexValue].ans) {
+        setScore(score + 1);
+      }
+      if (IndexValue < num_of_quiz-1) {
+        setIndexValue(IndexValue + 1); 
+      }
+      else{
+        navigate('/submitted');
+      }
     } else {
       setHid("");
       setHid("need-select");
     }
-    if (select === data[IndexValue].ans) {
-      setScore(score + 1);
-    }
-    console.log(IndexValue);
+    
   };
 
   const onchange = (e) => {
@@ -39,8 +48,7 @@ export default function QuesDiv() {
     setSelect(e.target.id);
     setOptionSelect("color2");
   };
-
-
+ 
  
 
   

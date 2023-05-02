@@ -10,7 +10,7 @@ export default function BodyDiv() {
     <>
     <div className="inner-main-div ">
         <ColorChangingDiv/>
-      <QuesDiv/> 
+        <QuesDiv/> 
     </div>
     </>
   )
